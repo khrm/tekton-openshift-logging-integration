@@ -1,0 +1,21 @@
+apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  annotations:
+    loki.grafana.com/rulesDiscoveredAt: "2024-08-04T18:08:15Z"
+  name: logging-loki
+  namespace: openshift-logging
+spec:
+  managementState: Managed
+  size: 1x.demo
+  storage:
+    schemas:
+    - effectiveDate: "2023-10-15"
+      version: v13
+    secret:
+      name: logging-loki-minio
+      type: s3
+  storageClassName: crc-csi-hostpath-provisioner
+  tenants:
+    mode: openshift-logging
+
