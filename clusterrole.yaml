@@ -1,0 +1,19 @@
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRole
+metadata:
+ name: viewlogs
+rules:
+- verbs:
+  - get
+  apiGroups:
+  - ''
+  resources:
+  - pods
+  - pods/log
+- apiGroups:
+  - ""
+  attributeRestrictions: null
+  resources:
+  - namespaces
+  verbs:
+  - get
