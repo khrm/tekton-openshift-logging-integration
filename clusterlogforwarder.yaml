@@ -1,0 +1,19 @@
+apiVersion: "logging.openshift.io/v1"
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  filters:
+  - name: only-tekton
+    type: drop
+    drop:
+    - test:
+      - field: .kubernetes_labels_app_kubernetes_io_managed_by
+        notMatches: tekton-pipelines
+  pipelines:
+    - name: enable-default-log-store
+      inputRefs: [ application ]
+      outputRefs: [ default ]
+      filterRefs: [ only-tekton  ]
+
