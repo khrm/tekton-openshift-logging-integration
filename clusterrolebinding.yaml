@@ -8,5 +8,21 @@ roleRef:
   name: viewlogs
 subjects:
 - kind: ServiceAccount
-  name: api
-  namespace: openshift-pipelines
+  name: tekton-results-api
+  namespace: tekton-pipelines
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  creationTimestamp: "2024-06-28T19:08:17Z"
+  name: logs-viewer-app-api
+  resourceVersion: "278178"
+  uid: 8041491a-6401-43d8-85ec-13d9f90aa185
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-logging-application-view
+subjects:
+- kind: ServiceAccount
+  name: tekton-results-api
+  namespace: tekton-pipelines
