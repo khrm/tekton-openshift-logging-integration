@@ -4,16 +4,14 @@ metadata:
   name: instance
   namespace: openshift-logging
 spec:
-  filters:
+  inputs:
   - name: only-tekton
-    type: drop
-    drop:
-    - test:
-      - field: .kubernetes_labels_app_kubernetes_io_managed_by
-        notMatches: tekton-pipelines
+    application:
+      selector:
+        matchLabels:
+          app.kubernetes.io/managed-by: tekton-pipelines
   pipelines:
     - name: enable-default-log-store
-      inputRefs: [ application ]
+      inputRefs: [ only-tekton ]
       outputRefs: [ default ]
-      filterRefs: [ only-tekton  ]
 
