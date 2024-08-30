@@ -48,3 +48,30 @@ Create clusterrolebinding to view logs across the namespace.
 ```
 oc create -f clusterrolebinding.yaml
 ```
+
+## Configuring Tekton Result for LokiStack in OpenShift 
+
+When we use OpenShift Logging and Red Hat LokiStack operator, we need to configure `logs_type` and `loki_url`.
+
+Sample TektonResult CR:
+
+```
+  apiVersion: operator.tekton.dev/v1alpha1
+  kind: TektonResult
+  metadata:
+    name: result
+  spec:
+    targetNamespace: openshift-pipelines
+    logs_api: true
+    log_level: debug
+    db_port: 5432
+    db_host: tekton-results-postgres-service.openshift-pipelines.svc.cluster.local
+    logs_type: Loki
+    loki_url: https://{loki_route}/api/logs/v1/application/
+    logs_buffer_size: 32768
+    auth_disable: true
+    db_enable_auto_migration: true
+    server_port: 8080
+    prometheus_port: 9090
+```
+
