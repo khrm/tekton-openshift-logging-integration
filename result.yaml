@@ -1,0 +1,9 @@
+apiVersion: operator.tekton.dev/v1alpha1
+kind: TektonResult
+metadata:
+  name: result
+spec:
+  targetNamespace: openshift-pipelines
+  loki_stack_name: logging-loki
+  loki_stack_namespace: openshift-logging
+  auth_disable: true
