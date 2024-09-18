@@ -4,7 +4,7 @@ You can use install..sh to install the operands and dependencies.
 ```
 sh install.sh
 # Install the tektonresult cr
-oc create -f result.yaml
+sh setup-results.sh
 ```
 
 # Install Minio
