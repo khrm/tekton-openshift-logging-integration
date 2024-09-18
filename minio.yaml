@@ -29,10 +29,6 @@ spec:
         image: quay.io/minio/minio:latest
         imagePullPolicy: IfNotPresent
         name: minio
-        ports:
-        - containerPort: 9000
-          hostPort: 9000
-          protocol: TCP
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
