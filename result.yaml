@@ -4,6 +4,6 @@ metadata:
   name: result
 spec:
   targetNamespace: openshift-pipelines
-  lokistack_name: logging-loki
-  lokistack_namespace: openshift-logging
+  loki_stack_name: logging-loki
+  loki_stack_namespace: openshift-logging
   auth_disable: true
