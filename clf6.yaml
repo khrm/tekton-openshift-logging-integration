@@ -1,28 +1,43 @@
-apiVersion: logging.openshift.io/v1
+apiVersion: observability.openshift.io/v1
 kind: ClusterLogForwarder
-metadata: 
-  name: instance
-spec: 
-  outputs: 
-  - loki: 
-      labelKeys: 
-      - "log_type"
-      - "kubernetes.namespace_name"
-      - "openshift.cluster_id"
-      tenantKey: log_type
-    # The prefix `default-` is mandatory for TLS verification
-    # by pulling the service-ca.crt from `logcollector-token`
-    name: default-lokistack-apps-with-label-keys
-    secret: 
-      # This secret is only with clusterLogging.logStore.lokiStack
-      name: logcollector-token
-    type: loki
-    # The URL needs to be explicit and replicates the
-    # automation hidden behind clusterLogging.logStore.lokiStack.name
-    url: https://lokistack-dev-gateway-http.openshift-logging.svc:8080/api/logs/v1/application
-  pipelines: 
-  - inputRefs: 
-    - application
-    name: lokistack-apps
-    outputRefs: 
-    - default-lokistack-apps-with-label-keys
+metadata:
+  name: logging
+  namespace: openshift-logging
+spec:
+  inputs:
+  - application:
+      selector:
+        matchLabels:
+          app.kubernetes.io/managed-by: tekton-pipelines
+    name: only-tekton
+    type: application
+  managementState: Managed
+  outputs:
+  - lokiStack:
+      authentication:
+        token:
+          from: serviceAccount
+      labelKeys:
+        application:
+          ignoreGlobal: true
+          labelKeys:
+          - log_type
+          - kubernetes.namespace_name
+          - openshift.cluster_id
+      target:
+        name: logging-loki
+    name: logging-loki
+    tls:
+      ca:
+        configMapName: openshift-service-ca.crt
+        key: service-ca.crt
+    type: lokiStack
+  pipelines:
+  - inputRefs:
+    - only-tekton
+    name: tekton-logs-to-loki
+    outputRefs:
+    - logging-loki
+  serviceAccount:
+    name: collector
+
