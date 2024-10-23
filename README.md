@@ -52,7 +52,7 @@ You should get an update for webconsole. On refreshing, you should be able to th
 
 ## Configuring Tekton Result for LokiStack in OpenShift
 
-When we use OpenShift Logging and Red Hat LokiStack operator, we need to configure `logs_type` and `loki_url`.
+When we use OpenShift Logging and Red Hat LokiStack operator, we need to configure `loki_stack_name` the name of the LokiStack CR and `loki_stack_namespace` - the namespace where the LokiStack CR exists.
 
 Sample TektonResult CR:
 
